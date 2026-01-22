@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Villa Liguria - Maison d'Hôtes de Charme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #d4af37;
+            --accent: #8b7355;
+            --light: #f8f6f3;
+            --white: #ffffff;
+            --text: #333;
+            --text-light: #666;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--secondary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Section commune */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 300;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        /* À propos */
+        .about {
+            background: var(--light);
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            padding: 2rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        .about-image-section {
+            position: relative;
+        }
+
+        .about-image-container {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .carousel-image.active {
+            opacity: 1;
+        }
+
+        .carousel-thumbnails {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            opacity: 0.6;
+        }
+
+        .thumbnail:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        .thumbnail.active {
+            border-color: var(--secondary);
+            opacity: 1;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Chambres */
+        .rooms {
+            background: var(--white);
+        }
+
+        .rooms-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .room-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+
+        .room-image-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .room-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .room-card:hover .room-image-container img {
+            transform: scale(1.1);
+        }
+
+        .room-details {
+            padding: 2rem;
+        }
+
+        .room-title {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .room-description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .room-features {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .feature::before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .room-price {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .room-price span {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: normal;
+        }
+
+        .room-button {
+            display: block;
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--secondary);
+            color: var(--white);
+            text-decoration: none;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+            font-family: 'Georgia', serif;
+        }
+
+        .room-button:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Services */
+        .services {
+            background: var(--light);
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: var(--white);
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Contact */
+        .contact {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .contact .section-title,
+        .contact .section-subtitle {
+            color: var(--white);
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem;
+        }
+
+        .contact-item h3 {
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-item p {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 5%;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                background: var(--white);
+                flex-direction: column;
+                width: 100%;
+                padding: 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                transition: right 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            section {
+                padding: 3rem 5%;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image-container {
+                height: 300px;
+            }
+
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .room-image-container {
+                height: 220px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            .room-features {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .about-image-container {
+                height: 250px;
+            }
+
+            .room-image-container {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Villa Liguria</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#about">À Propos</a></li>
+            <li><a href="#rooms">Chambres</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="accueil">
+        <img src="./images/exterior.jpg" class="hero-bg" alt="Villa Liguria">
+        <div class="hero-content">
+            <h1>Bienvenue à <br> Villa Liguria</h1>
+            <p>Votre havre de paix au cœur de la nature. Une expérience authentique et raffinée.</p>
+            <a href="#rooms" class="cta-button">Découvrir nos chambres</a>
+        </div>
+    </section>
+
+    <!-- À propos -->
+    <section class="about" id="about">
+        <h2 class="section-title">Notre Maison d'Hôtes</h2>
+        <p class="section-subtitle">Un lieu unique pour des moments inoubliables</p>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Nichée dans un cadre idyllique, Villa Liguria vous accueille dans une atmosphère chaleureuse et authentique. Notre maison d'hôtes moderne allie design contemporain et confort absolu.</p>
+                <p>Chaque chambre a été pensée pour vous offrir une expérience unique, alliant élégance et sérénité. Profitez de nos espaces lumineux, de notre terrasse panoramique et de la vue imprenable sur la nature environnante.</p>
+                <p>Nous mettons un point d'honneur à vous faire découvrir les richesses de notre région à travers un accueil personnalisé et des recommandations sur mesure.</p>
+            </div>
+            <div class="about-image-section">
+                <div class="about-image-container">
+                    <img src="./images/exterior.jpg" alt="Villa Liguria - Extérieur" class="carousel-image active" data-index="0">
+                    <img src="./images/exteriorlac.jpeg" alt="Villa Liguria - Vue 2" class="carousel-image" data-index="1">
+                    <img src="./images/salon1.jpeg" alt="Villa Liguria - Vue 3" class="carousel-image" data-index="2">
+                    <img src="./images/salon2.jpeg" alt="Villa Liguria - Vue 3" class="carousel-image" data-index="3">
+
+                </div>
+                <div class="carousel-thumbnails">
+                    <div class="thumbnail active" onclick="changeImage(0)">
+                        <img src="./images/exterior.jpg" alt="Photo 1">
+                    </div>
+                    
+                    <div class="thumbnail" onclick="changeImage(2)">
+                        <img src="./images/salon1.jpeg" alt="Photo 3">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage(3)">
+                        <img src="./images/salon2.jpeg" alt="Photo 4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chambres -->
+    <section class="rooms" id="rooms">
+        <h2 class="section-title">Nos Chambres</h2>
+        <p class="section-subtitle">Trois univers pour un séjour sur mesure</p>
+        <div class="rooms-grid">
+            <div class="room-card">
+                <div class="room-image-container">
+                    <img src="./images/chambre-azur.jpg" alt="Chambre Azur">
+                </div>
+                <div class="room-details">
+                    <h3 class="room-title">Chambre Azur</h3>
+                    <p class="room-description">Baignée de lumière naturelle, cette chambre offre une vue panoramique sur la campagne. Décoration contemporaine aux tons bleus apaisants.</p>
+                    <div class="room-features">
+                        <span class="feature">Lit Double</span>
+                        <span class="feature">Douche italienne privée</span>
+                        <span class="feature">Terrasse</span>
+                    </div>
+                    <div class="room-price">90€ <span>/ nuit</span></div>
+                    <a href="chambre-azur.html" class="room-button">Voir les détails</a>
+                </div>
+            </div>
+
+            <div class="room-card">
+                <div class="room-image-container">
+                    <img src="./images/chambre-zen.jpg" alt="Chambre Zen">
+                </div>
+                <div class="room-details">
+                    <h3 class="room-title">Chambre Zen</h3>
+                    <p class="room-description">Chambre spacieuse avec ambiance zen et apaisante. Tons naturels vert pour une harmonie parfaite avec la nature.</p>
+                    <div class="room-features">
+                        <span class="feature">Lit Double</span>
+                        <span class="feature">Douche italienne privée</span>
+                        <span class="feature">Terrasse</span>
+                    </div>
+                    <div class="room-price">90€ <span>/ nuit</span></div>
+                    <a href="chambre-zen.html" class="room-button">Voir les détails</a>
+                </div>
+            </div>
+
+            <div class="room-card">
+                <div class="room-image-container">
+                    <img src="./images/chambre-safran.jpg" alt="Chambre Safran">
+                </div>
+                <div class="room-details">
+                    <h3 class="room-title">Chambre Safran</h3>
+                    <p class="room-description">Chambre lumineuse aux tons chauds, idéale pour un séjour romantique. Vue dégagée et décoration élégante.</p>
+                    <div class="room-features">
+                        <span class="feature">Lit Double</span>
+                        <span class="feature">Douche italienne privée</span>
+                        <span class="feature">Terrasse</span>
+                    </div>
+                    <div class="room-price">90€ <span>/ nuit</span></div>
+                    <a href="chambre-safran.html" class="room-button">Voir les détails</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <h2 class="section-title">Nos Services</h2>
+        <p class="section-subtitle">Pour rendre votre séjour inoubliable</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🍽️</div>
+                <h3>Petit-déjeuner</h3>
+                <p>Petit-déjeuner maison avec produits locaux et de saison, servi dans notre espace commun ou en terrasse.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌅</div>
+                <h3>Terrasse panoramique</h3>
+                <p>Profitez de notre superbe terrasse avec vue imprenable, équipée de transats et salon de jardin.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌳</div>
+                <h3>Environnement naturel</h3>
+                <p>Cadre champêtre exceptionnel avec vue dégagée, parfait pour se ressourcer et se détendre.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚗</div>
+                <h3>Parking sécurisé</h3>
+                <p>Parking privé et sécurisé pour tous nos hôtes, accessible 24h/24.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">Réservez votre séjour</h2>
+        <p class="section-subtitle">Nous serions ravis de vous accueillir</p>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📍 Adresse</h3>
+                    <p>12 Ter du Bel Air, 89320 Vaudeurs</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📞 Téléphone</h3>
+                    <p>07 87 14 01 38<br>Lun-Dim: 8h-20h</p>
+                </div>
+                <div class="contact-item">
+                    <h3>✉️ Email</h3>
+                    <p>villaliguria89@gmail.com<br>Réponse sous 24h</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Villa Liguria - Maison d'Hôtes de Charme. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        // Fonction pour changer d'image dans le carrousel
+        function changeImage(index) {
+            // Retirer la classe active de toutes les images et thumbnails
+            document.querySelectorAll('.carousel-image').forEach(img => {
+                img.classList.remove('active');
+            });
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+
+            // Ajouter la classe active à l'image et thumbnail sélectionnés
+            document.querySelectorAll('.carousel-image')[index].classList.add('active');
+            document.querySelectorAll('.thumbnail')[index].classList.add('active');
+        }
+
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.room-card, .service-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
